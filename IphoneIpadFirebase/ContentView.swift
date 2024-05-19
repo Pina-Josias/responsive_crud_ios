@@ -8,14 +8,22 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var loginShow: FirebaseViewModel
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        Group {
+            if !loginShow.show {
+                Login()
+            } else {
+                Home()
+                    .ignoresSafeArea()
+                    .preferredColorScheme(.dark)
+            }
+        }.onAppear {
+            if UserDefaults.standard.object(forKey: "session") != nil {
+                loginShow.show = true
+            }
         }
-        .padding()
     }
 }
 
